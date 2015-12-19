@@ -1,0 +1,22 @@
+[
+    {
+        "name": "check_load",
+        "command": "/usr/lib/nagios/plugins/check_load -w 3,2,2 -c 4,3,3",
+        "timeout": 10
+
+    },
+
+    {
+        "name": "check_dummy_warning",
+        "command": "/usr/lib/nagios/plugins/check_dummy 1 Testing..."
+
+    },
+
+    {
+        "name": "check_timeout_test",
+        "command": "/bin/sleep 5s && echo 'Sleeping for 5 seconds'",
+        "timeout": 3
+
+    }
+
+]       
