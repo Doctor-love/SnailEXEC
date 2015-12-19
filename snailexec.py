@@ -18,6 +18,7 @@ try:
     import argparse
     import functools
     import subprocess
+    import logging.handlers
 
 except ImportError as missing:
     print(
@@ -59,6 +60,9 @@ def json_guarded(func):
 
         except SystemExit as exit_code:
             exit(int(str(exit_code)))
+        
+        except KeyboardInterrupt:
+            exit_program(msg='SnailEXEC was interrupted by keyboard')
 
         except Exception as error_msg:
             # Exits the application with JSON output

@@ -1,6 +1,6 @@
 SnailEXEC
 =========
-###### _Execute shell commands and output the results to JSON for later use'_
+###### _Execute shell commands and output the results to JSON for later use_
 
 Overview
 ========
