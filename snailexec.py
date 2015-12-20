@@ -4,7 +4,7 @@
 
 developers = ['Joel Rangsmo <joel@rangsmo.se>']
 description = __doc__
-version = '0.1'
+version = '0.2'
 license = 'GPLv2'
 
 try:
@@ -76,12 +76,16 @@ def json_guarded(func):
 # -----------------------------------------------------------------------------
 # Application exit related code
 
-def exit_program(output_file=None, status='ERROR', msg='', tag='', results=[]):
+def exit_program(
+    status='ERROR', msg='', tag='',
+    results_version=1, results=[], output_file=None):
+    
     '''Outputs status and results to stdout or file and exits the program'''
 
     logger.debug(
-        'Exiting with status "%s", message "%s", tag "%s" and results "%s"'
-        % (status, msg, tag, str(results)))
+        'Exiting with status "%s", message "%s", '
+        'tag "%s", results version %i and result data "%s"'
+        % (status, msg, tag, results_version, str(results)))
 
     if output_file:
         logger.debug('Saving JSON output to file "%s"' % output_file)
@@ -89,7 +93,9 @@ def exit_program(output_file=None, status='ERROR', msg='', tag='', results=[]):
     else:
         logger.debug('Printing output to stdout')
 
-    output = {'status': status, 'msg': msg, 'tag': tag, 'results': results}
+    output = {
+        'status': status, 'msg': msg, 'tag': tag,
+        'results_version': results_version, 'results': results}
 
     try:
         output = json.dumps(output, ensure_ascii=False)
@@ -502,9 +508,10 @@ def execute_command(**kwargs):
         '%i seconds of timeout, %i seconds of sleep time and result version %i'
         % (name, command_string, timeout, sleep_time, results_version))
 
+    start_time = time.time()
+
     try:
         timeout_counter = timeout
-        start_time = time.time()
         
         shell_exec = subprocess.Popen(
             command_string, shell=True,
@@ -526,7 +533,9 @@ def execute_command(**kwargs):
             time.sleep(sleep_time)
 
             return {
-                'name': name, 'stdout': '', 'stderr': '',
+                'name': name, 'stdout': '',
+                'stderr': '', 'exit_code': 1,
+                'start_time': start_time, 'end_time': end_time,
                 'exec_time': exec_time, 'status': 'ERROR', 'msg': msg}
 
         # Extracts the result data
@@ -537,7 +546,9 @@ def execute_command(**kwargs):
         stderr = output[1]
 
         result = {
-            'name': name, 'stdout': stdout, 'stderr': stderr,
+            'name': name, 'stdout': stdout,
+            'stderr': stderr,'exit_code': exit_code,
+            'start_time': start_time, 'end_time': end_time,
             'exec_time': exec_time, 'status': 'OK', 'msg': ''}
 
         logger.debug('Result of command "%s": "%s"' % (name, str(result)))
@@ -554,12 +565,17 @@ def execute_command(**kwargs):
 
         logger.error(msg)
 
+        end_time = time.time()
+        exec_time = end_time - start_time
+
         logger.debug('Sleeping for %i seconds before return' % sleep_time)
         time.sleep(sleep_time)
 
         return {
-            'name': name, 'stdout': '', 'stderr': '',
-            'exec_time': 0.0, 'status': 'ERROR', 'msg': msg}
+            'name': name, 'stdout': '',
+            'stderr': '', 'exit_code': 1,
+            'start_time': start_time, 'end_time': end_time,
+            'exec_time': exec_time, 'status': 'ERROR', 'msg': msg}
 
 # -----------------------------------------------------------------------------
 # Main function related code
