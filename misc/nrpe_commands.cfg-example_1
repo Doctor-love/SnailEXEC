@@ -1,5 +1,0 @@
-# This is a comment
-some_setting = 1
-
-command[check_apt_updates]=/usr/lib/nagios/plugins/check_apt
-command[check_ping]=/usr/lib/nagios/plugins/check_ping -H '$ARG1$' -w '$ARG2$' -c '$ARG3$'
