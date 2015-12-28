@@ -546,6 +546,11 @@ def execute_command(**kwargs):
         stdout = output[0]
         stderr = output[1]
 
+        logger.debug('Decoding stdout and stderr as UTF-8')
+
+        stdout = stdout.decode('utf-8', 'ignore')
+        stderr = stderr.decode('utf-8', 'ignore')
+
         result = {
             'name': name, 'stdout': stdout,
             'stderr': stderr,'exit_code': exit_code,
