@@ -12,6 +12,7 @@ Once complete, the results can be transfered to a remote system with HTTP/FTP/sn
 Installation
 ============
 The script requires Python 2.7 or 2.6 with the "argparse" module installed.  
+SnailEXEC has been tested on various UNIX-like systems and Windows 8.1.  
 
 Example output
 ==============
