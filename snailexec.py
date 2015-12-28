@@ -4,7 +4,7 @@
 
 developers = ['Joel Rangsmo <joel@rangsmo.se>']
 description = __doc__
-version = '0.2'
+version = '0.3'
 license = 'GPLv2'
 
 try:
@@ -14,6 +14,7 @@ try:
     import json
     import glob
     import time
+    import getpass
     import logging
     import argparse
     import functools
@@ -545,6 +546,11 @@ def execute_command(**kwargs):
         stdout = output[0]
         stderr = output[1]
 
+        logger.debug('Decoding stdout and stderr as UTF-8')
+
+        stdout = stdout.decode('utf-8', 'ignore')
+        stderr = stderr.decode('utf-8', 'ignore')
+
         result = {
             'name': name, 'stdout': stdout,
             'stderr': stderr,'exit_code': exit_code,
@@ -591,9 +597,15 @@ def main():
     global logger
     logger = log_init(args.log_dest, args.log_verbose)
 
+    try:
+        user = getpass.getuser()
+
+    except:
+        user = 'UNKNOWN'
+
     logger.debug(
-        'SnailEXEC has been started by UID "%s" with arguments: "%s"'
-        % (str(os.getuid()), str(args)))
+        'SnailEXEC has been started by user "%s" with arguments: "%s"'
+        % (user, str(args)))
 
     start_time = int(time.time())
 
