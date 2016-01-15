@@ -1,0 +1,16 @@
+[
+    {
+        "name": "check_gdns_alive",
+        "command": "/usr/lib/nagios/plugins/check_ping -H 8.8.8.8 -w 30,3% -c 40,4%",
+	"timeout": 15
+
+    },
+
+    {
+	"name": "check_timeout",
+	"command": "/bin/sleep 5s",
+	"timeout": 3
+
+    }
+
+]

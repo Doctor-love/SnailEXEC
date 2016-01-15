@@ -14,6 +14,8 @@ Installation
 The script requires Python 2.7 or 2.6 with the "argparse" module installed.  
 SnailEXEC has been tested on various UNIX-like systems and Windows 8.1.  
 
+Pre-built executables are available [in the releases section](https://github.com/Doctor-love/SnailEXEC/releases).    
+
 Example output
 ==============
 Executing commands specified with command line arguments:  
@@ -84,7 +86,7 @@ $ cat "/path/to/commands.json"
 
 $ ./snailexec.py --json "/path/to/commands.json" --output-file "test_output_2.json"
 
-snailexec: INFO - Loading commands from JSON file "misc/command_example.json"
+snailexec: INFO - Loading commands from JSON file "/path/to/commands.json"
 snailexec: ERROR - Command "check_timeout" timed out after 3 seconds
 
 ```
