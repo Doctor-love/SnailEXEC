@@ -4,7 +4,7 @@
 
 developers = ['Joel Rangsmo <joel@rangsmo.se>']
 description = __doc__
-version = '0.3'
+version = '0.3.1'
 license = 'GPLv2'
 
 try:
@@ -20,6 +20,9 @@ try:
     import functools
     import subprocess
     import logging.handlers
+
+    # PyInstaller requires explicit import of exit
+    from sys import exit
 
 except ImportError as missing:
     print(
